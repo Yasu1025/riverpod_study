@@ -1,4 +1,4 @@
-# flutter_riverpod
+# riverpod_study
 
 A new Flutter project.
 

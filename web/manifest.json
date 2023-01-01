@@ -1,6 +1,6 @@
 {
-    "name": "flutter_riverpod",
-    "short_name": "flutter_riverpod",
+    "name": "riverpod_study",
+    "short_name": "riverpod_study",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
