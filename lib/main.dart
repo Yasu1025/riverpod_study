@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_study/data/count/count_data.dart';
+import 'package:riverpod_study/provider.dart';
 
 void main() {
   runApp(
@@ -20,43 +23,89 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends ConsumerWidget {
-  MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  int _counter = 0;
-
-  void _incrementCounter() {}
+class MyHomePage extends ConsumerStatefulWidget {
+  MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends ConsumerState<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(ref.watch(titleProvider)),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(title),
             Text(
-              '$_counter',
+              ref.watch(textProvider),
+            ),
+            Text(
+              ref.watch(countDataProvider).count.toString(),
               style: Theme.of(context).textTheme.headline4,
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    CountData countData =
+                        ref.read(countDataProvider.notifier).state;
+                    ref.read(countDataProvider.notifier).state =
+                        countData.copyWith(
+                      count: countData.count + 1,
+                      countUp: countData.countUp + 1,
+                    );
+                  },
+                  child: const Icon(CupertinoIcons.plus),
+                ),
+                FloatingActionButton(
+                  onPressed: () {
+                    CountData countData =
+                        ref.read(countDataProvider.notifier).state;
+                    ref.read(countDataProvider.notifier).state =
+                        countData.copyWith(
+                      count: countData.count - 1,
+                      countDown: countData.countDown + 1,
+                    );
+                  },
+                  child: const Icon(CupertinoIcons.minus),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(ref
+                    .watch(countDataProvider.select((value) => value.countUp))
+                    .toString()),
+                Text(ref
+                    .watch(countDataProvider.select((value) => value.countDown))
+                    .toString()),
+              ],
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        onPressed: () {
+          ref.read(countDataProvider.notifier).state = const CountData(
+            count: 0,
+            countUp: 0,
+            countDown: 0,
+          );
+        },
+        child: const Icon(CupertinoIcons.refresh),
+      ),
     );
   }
 }
