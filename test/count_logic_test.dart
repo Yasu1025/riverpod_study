@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_study/data/count/count_data.dart';
-import 'package:riverpod_study/logic/count_logic.dart';
+import 'package:riverpod_study/model/count_model.dart';
 
 void main() {
-  CountLogic target = CountLogic();
+  CountModel target = CountModel();
 
   setUp(() async {
-    target = CountLogic();
+    target = CountModel();
   });
 
   test('init', () async {
