@@ -1,9 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_study/data/count/count_data.dart';
+import 'package:riverpod_study/logic/sound_logic.dart';
 import 'package:riverpod_study/model/count_model.dart';
 import 'package:riverpod_study/provider.dart';
 
 class CountViewModel {
   final CountModel _model = CountModel();
+  final SoundLogic _soundLogic = SoundLogic();
   late WidgetRef _ref;
 
   void setRef(WidgetRef ref) {
@@ -17,19 +20,24 @@ class CountViewModel {
 
   void onIncrease() {
     _model.increase();
-
-    _ref.watch(countDataProvider.notifier).state = _model.countData;
+    update();
   }
 
   void onDecrease() {
     _model.decrease();
-
-    _ref.watch(countDataProvider.notifier).state = _model.countData;
+    update();
   }
 
   void onReset() {
     _model.reset();
+    update();
+  }
 
+  void update() {
+    CountData prevData = _ref.watch(countDataProvider.notifier).state;
     _ref.watch(countDataProvider.notifier).state = _model.countData;
+    CountData newData = _ref.watch(countDataProvider.notifier).state;
+
+    _soundLogic.valueChanged(prevData, newData);
   }
 }
