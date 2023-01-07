@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_study/data/count/count_data.dart';
 import 'package:riverpod_study/provider.dart';
 import 'package:riverpod_study/view_model/count_view_model.dart';
 
@@ -24,24 +23,27 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: MyHomePage(CountViewModel()),
     );
   }
 }
 
 class MyHomePage extends ConsumerStatefulWidget {
-  MyHomePage({super.key});
+  final CountViewModel countVM;
+  const MyHomePage(this.countVM, {super.key});
 
   @override
   ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends ConsumerState<MyHomePage> {
-  CountViewModel countVM = CountViewModel();
+  late CountViewModel _countVM;
   @override
   void initState() {
     super.initState();
-    countVM.setRef(ref);
+
+    _countVM = widget.countVM;
+    _countVM.setRef(ref);
   }
 
   @override
@@ -58,18 +60,18 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               ref.watch(textProvider),
             ),
             Text(
-              countVM.count.toString(),
+              _countVM.count.toString(),
               style: Theme.of(context).textTheme.headline4,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 FloatingActionButton(
-                  onPressed: countVM.onIncrease,
+                  onPressed: _countVM.onIncrease,
                   child: const Icon(CupertinoIcons.plus),
                 ),
                 FloatingActionButton(
-                  onPressed: countVM.onDecrease,
+                  onPressed: _countVM.onDecrease,
                   child: const Icon(CupertinoIcons.minus),
                 ),
               ],
@@ -77,15 +79,15 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(countVM.countUp.toString()),
-                Text(countVM.countDown.toString()),
+                Text(_countVM.countUp.toString()),
+                Text(_countVM.countDown.toString()),
               ],
             )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: countVM.onReset,
+        onPressed: _countVM.onReset,
         child: const Icon(CupertinoIcons.refresh),
       ),
     );

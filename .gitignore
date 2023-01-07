@@ -46,3 +46,7 @@ app.*.map.json
 # freezed
 *.g.dart
 *.freezed.dart
+
+# test
+/test/failures
+/test/goldens
