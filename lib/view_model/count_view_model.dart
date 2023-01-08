@@ -20,22 +20,19 @@ class CountViewModel {
   void setRef(WidgetRef ref, TickerProvider tickerProvider) {
     _ref = ref;
 
-    ValueChangedCondition conditionPlus =
-        (CountData prevData, CountData newData) {
+    conditionPlus(CountData prevData, CountData newData) {
       return prevData.countUp + 1 == newData.countUp;
-    };
+    }
 
-    ValueChangedCondition conditionMinus =
-        (CountData prevData, CountData newData) {
+    conditionMinus(CountData prevData, CountData newData) {
       return prevData.countDown + 1 == newData.countDown;
-    };
+    }
 
-    ValueChangedCondition conditionReset =
-        (CountData prevData, CountData newData) {
+    conditionReset(CountData prevData, CountData newData) {
       return newData.count == 0 &&
           newData.countUp == 0 &&
           newData.countDown == 0;
-    };
+    }
 
     _btnAnimationLogicPlus =
         ButtonAnimationLogic(tickerProvider, conditionPlus);
@@ -57,9 +54,12 @@ class CountViewModel {
   get countDown =>
       _ref.watch(countDataProvider.select((value) => value.countDown));
 
-  get animationBtnPlus => _btnAnimationLogicPlus.animationScale;
-  get animationBtnMinus => _btnAnimationLogicMinus.animationScale;
-  get animationBtnReset => _btnAnimationLogicReset.animationScale;
+  get animationBtnPlusCombination =>
+      _btnAnimationLogicPlus.animationCombination;
+  get animationBtnMinusCombination =>
+      _btnAnimationLogicMinus.animationCombination;
+  get animationBtnResetCombination =>
+      _btnAnimationLogicReset.animationCombination;
 
   void onIncrease() {
     _model.increase();
