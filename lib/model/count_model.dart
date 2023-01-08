@@ -9,6 +9,10 @@ class CountModel {
 
   get countData => _countData;
 
+  void init(CountData countData) {
+    _countData = countData;
+  }
+
   void increase() {
     _countData = _countData.copyWith(
         count: _countData.count + 1, countUp: _countData.countUp + 1);

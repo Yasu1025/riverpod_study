@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_study/data/count/count_data.dart';
 import 'package:riverpod_study/logic/button_animation.dart';
 import 'package:riverpod_study/logic/count_changed_notifier.dart';
+import 'package:riverpod_study/logic/shared_preferences_logic.dart';
 import 'package:riverpod_study/logic/sound_logic.dart';
 import 'package:riverpod_study/model/count_model.dart';
 import 'package:riverpod_study/provider.dart';
@@ -45,8 +46,14 @@ class CountViewModel {
       _btnAnimationLogicPlus,
       _btnAnimationLogicMinus,
       _btnAnimationLogicReset,
-      _soundLogic
+      _soundLogic,
+      SharedPreferencesLogic()
     ];
+
+    SharedPreferencesLogic.read().then((value) => {
+          _model.init(value),
+          update(),
+        });
   }
 
   get count => _ref.watch(countDataProvider).count;

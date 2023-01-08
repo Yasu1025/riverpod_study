@@ -40,6 +40,7 @@ dependencies:
   json_annotation: ^4.7.0
   golden_toolkit: ^0.9.0
   audioplayers: ^0.20.1
+  shared_preferences: ^2.0.12
 
 dev_dependencies:
   flutter_test:
