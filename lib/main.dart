@@ -36,14 +36,15 @@ class MyHomePage extends ConsumerStatefulWidget {
   ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends ConsumerState<MyHomePage> {
+class _MyHomePageState extends ConsumerState<MyHomePage>
+    with TickerProviderStateMixin {
   late CountViewModel _countVM;
   @override
   void initState() {
     super.initState();
 
     _countVM = widget.countVM;
-    _countVM.setRef(ref);
+    _countVM.setRef(ref, this);
   }
 
   @override
@@ -68,11 +69,17 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               children: [
                 FloatingActionButton(
                   onPressed: _countVM.onIncrease,
-                  child: const Icon(CupertinoIcons.plus),
+                  child: ScaleTransition(
+                    scale: _countVM.animationBtnPlus,
+                    child: const Icon(CupertinoIcons.plus),
+                  ),
                 ),
                 FloatingActionButton(
                   onPressed: _countVM.onDecrease,
-                  child: const Icon(CupertinoIcons.minus),
+                  child: ScaleTransition(
+                    scale: _countVM.animationBtnMinus,
+                    child: const Icon(CupertinoIcons.minus),
+                  ),
                 ),
               ],
             ),
@@ -88,7 +95,10 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _countVM.onReset,
-        child: const Icon(CupertinoIcons.refresh),
+        child: ScaleTransition(
+          scale: _countVM.animationBtnReset,
+          child: const Icon(CupertinoIcons.refresh),
+        ),
       ),
     );
   }
